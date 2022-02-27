@@ -24,7 +24,7 @@ class ToDoList extends Component {
   add = (e) => {
     let {lista, tarefa} = this.state
     //condicional para adicionar o que foi escrito, caso nao esteja vazio
-    if(tarefa !== 0 || null){
+    if(tarefa.length !== 0 || null){
       //lista recebe tudo o que ja esta dentro dela 
       //assim que receber, nossa tarefa sera esvaziada (input)
       //a tarefa que eu escrevi sera concatenada com a minha lista (com os itens ja existentes la)
@@ -36,6 +36,7 @@ class ToDoList extends Component {
        tarefa:""
      })
    }
+   e.preventDefault()
   }
 
   remove = (id) => {
@@ -59,7 +60,7 @@ class ToDoList extends Component {
           <button onClick={add}>Add</button>
           {lista.map((item) =>(
             <ul className='list-item'>
-              <li>{item.tarefa}</li>            
+              <li>{item.tarefa}</li>         
                 <button onClick={() => remove(item.id)}>x</button>   {/* essa função do remove e uma função de callback */}
             </ul>
           ))}            
