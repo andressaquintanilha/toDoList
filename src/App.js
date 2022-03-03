@@ -1,6 +1,70 @@
-import React, { Component } from 'react'
-import './App.css'
+import React, {Component} from 'react'
+import styled from "styled-components"
+import { createGlobalStyle } from 'styled-components'
 
+const GlobalStyle = createGlobalStyle`
+  *{
+    margin: 0;
+    padding:0;
+    box-sizing: border-box;
+  }
+`  
+//estrutura: const o que vc quer alterar = styled.tag``
+const Corpo = styled.body `
+  background-color: darkolivegreen;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+`
+const Box = styled.section `
+  border-radius: 20px;
+  box-shadow: 1px 6px 5px rgba(245, 245, 220, 0.5);
+  width: 50vw;
+  height: 90vh;
+`
+const Title = styled.h1 `
+  font-size: 3em;
+  border-bottom: 2px solid rgb(41, 38, 38);
+  color: azure;
+  text-shadow: black 2px 1px;
+`
+const Botao = styled.button `
+  font-size: 1em;
+  border: none;
+  box-shadow: 1px 2px 2px rgb(41, 38, 38); ;
+  background-color: none;
+  padding: 0.2em;
+  border-radius: 2px;
+  font-weight: 900;
+  &hover:{pointer};
+`
+const InputList = styled.input `
+  padding: 0.5em;
+  border: none;
+  border-radius: 2px;
+  background-color: beige;
+  margin: 1.2em;
+  width: 30vw;
+`
+const UnorderedList = styled.ul`
+  text-decoration: none;  
+  color:beige;
+  font-size: 20px;
+  list-style: none;
+`
+
+const ItemsList = styled.li `
+    margin-top: 2vh;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+`
 class ToDoList extends Component {
 
   state = {
@@ -11,7 +75,7 @@ class ToDoList extends Component {
   }
 
   //função para pegar valores recebidos pelo input *função padrão*
-  handleChange = (e) => {    
+  handleChange = (e) => {
     this.setState({
       //o estado da tarefa ira se atualizar
       //toda vez que eu escrever algo algo no input, isso sera guardado na tarefa
@@ -19,24 +83,30 @@ class ToDoList extends Component {
     })
   }
 
+  handleKeyPress = (e) => {
+    if(e.key === 'Enter'){
+      this.add()
+    }
+  }
+
   //quando eu clicar no botão de add eu quero que o item fique fixo
   //e me permita adicionar outras coisas
   add = (e) => {
     let {lista, tarefa} = this.state
     //condicional para adicionar o que foi escrito, caso nao esteja vazio
-    if(tarefa.length !== 0 || null){
+    if (tarefa.length !== 0 || null) {
       //lista recebe tudo o que ja esta dentro dela 
       //assim que receber, nossa tarefa sera esvaziada (input)
       //a tarefa que eu escrevi sera concatenada com a minha lista (com os itens ja existentes la)
-    this.setState({
-      lista: lista.concat({
-        tarefa: tarefa,
-        id: Date.now()
-       }),
-       tarefa:""
-     })
-   }
-   e.preventDefault()
+      this.setState({
+        lista: lista.concat({
+          tarefa: tarefa,
+          id: Date.now()
+        }),
+        tarefa: ""
+      })
+    }
+    e.preventDefault()
   }
 
   remove = (id) => {
@@ -45,29 +115,33 @@ class ToDoList extends Component {
       //eu quero que  meu estato da lista seja tudo o que ja tem dentro dela
       //e filtre para cada item que ha la dentro, se o item for diferente do
       //id que foi selecionado, ele sera removido
-      lista: lista.filter((item) => (item.id !== id))
+      lista: lista.filter((item) => (
+        item.id !== id
+        ))
     })
   }
 
-  render(){
-    let {handleChange, add, remove} = this
+  render() {
+    let {handleChange, add, remove, handleKeyPress} = this
     let {tarefa, lista} = this.state
-    return(
-      <div className='container'>
-        <div className='box'>
-          <h1>ToDo List</h1>          
-          <input value={tarefa} onChange={handleChange}/> {/* pega o valor que será digitado */}
-          <button onClick={add}>Add</button>
-          {lista.map((item) =>(
-            <ul className='list-item'>
-              <li>{item.tarefa}</li>         
-                <button onClick={() => remove(item.id)}>x</button>   {/* essa função do remove e uma função de callback */}
-            </ul>
-          ))}            
-          </div>
-          </div>
-    )
+    return (
+        <Corpo>
+          <GlobalStyle/>
+         <Box>
+          <Title>ToDo List</Title>
+            <InputList value = {tarefa} onKeyPress={handleKeyPress} onChange ={handleChange}/>  
+            <Botao onClick = {add}>Add</Botao>
+            {lista.map((item) => (
+              <UnorderedList>
+                <ItemsList> {item.tarefa} </ItemsList>
+                <Botao onClick = {() => remove(item.id)}> x </Botao>   {/ * essa função do remove e uma função de callback * /} 
+              </UnorderedList>
+            ))
+            } 
+          </Box>
+        </Corpo>
+      )
+    }
   }
-}
 
 export default ToDoList;
