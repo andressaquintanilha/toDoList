@@ -83,7 +83,7 @@ class ToDoList extends Component {
     })
   }
 
-  handleKeyPress = (e) => {
+  handleKeyDown = (e) => {
     if(e.key === 'Enter'){
       this.add()
     }
@@ -91,7 +91,7 @@ class ToDoList extends Component {
 
   //quando eu clicar no botão de add eu quero que o item fique fixo
   //e me permita adicionar outras coisas
-  add = (e) => {
+  add = () => {
     let {lista, tarefa} = this.state
     //condicional para adicionar o que foi escrito, caso nao esteja vazio
     if (tarefa.length !== 0 || null) {
@@ -106,7 +106,7 @@ class ToDoList extends Component {
         tarefa: ""
       })
     }
-    e.preventDefault()
+    // preventDefault()
   }
 
   remove = (id) => {
@@ -122,19 +122,19 @@ class ToDoList extends Component {
   }
 
   render() {
-    let {handleChange, add, remove, handleKeyPress} = this
+    let {handleChange, add, remove, handleKeyDown} = this
     let {tarefa, lista} = this.state
     return (
         <Corpo>
           <GlobalStyle/>
          <Box>
           <Title>ToDo List</Title>
-            <InputList value = {tarefa} onKeyPress={handleKeyPress} onChange ={handleChange}/>  
+            <InputList value = {tarefa} onKeyDown={handleKeyDown} onChange ={handleChange}/>  
             <Botao onClick = {add}>Add</Botao>
             {lista.map((item) => (
               <UnorderedList>
                 <ItemsList> {item.tarefa} </ItemsList>
-                <Botao onClick = {() => remove(item.id)}> x </Botao>   {/ * essa função do remove e uma função de callback * /} 
+                <Botao onClick = {() => remove(item.id)}> x </Botao>   
               </UnorderedList>
             ))
             } 
